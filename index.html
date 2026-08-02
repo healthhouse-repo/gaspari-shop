@@ -506,6 +506,24 @@
     margin-top:28px;background:#F7F7F7;border-radius:8px;padding:24px;max-width:680px;display:none;
   }
   .track-status.show{display:block;}
+
+  /* ---------- COOKIE BAR ---------- */
+  .cookie-bar{position:fixed;left:0;right:0;bottom:0;z-index:9000;background:#15191D;color:#fff;
+    border-top:3px solid #D0021B;padding:20px 0;transform:translateY(110%);transition:transform .35s ease;
+    box-shadow:0 -8px 30px rgba(0,0,0,.35)}
+  .cookie-bar.show{transform:translateY(0)}
+  .cookie-inner{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+  .cookie-copy{flex:1;min-width:260px}
+  .cookie-copy strong{display:block;font-size:15px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+  .cookie-copy p{margin:0;font-size:13px;line-height:1.6;color:rgba(255,255,255,.72)}
+  .cookie-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .cookie-btn{cursor:pointer;border:none;padding:13px 26px;font-size:12px;font-weight:700;letter-spacing:.09em;
+    text-transform:uppercase;transition:opacity .2s,background .2s,color .2s;font-family:inherit}
+  .cookie-btn.primary{background:#D0021B;color:#fff}
+  .cookie-btn.primary:hover{opacity:.85}
+  .cookie-btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
+  .cookie-btn.ghost:hover{background:rgba(255,255,255,.12)}
+  @media(max-width:720px){.cookie-inner{gap:16px}.cookie-actions{width:100%}.cookie-btn{flex:1;text-align:center}}
 </style>
 </head>
 <body>
@@ -1223,6 +1241,15 @@
 
 <div class="toast" id="toast"></div>
 
+<div class="cookie-bar" id="cookieBar" role="dialog" aria-live="polite" aria-label="Wij gebruiken cookies">
+  <div class="container cookie-inner">
+    <div class="cookie-copy"><strong>Wij gebruiken cookies</strong><p>Deze site gebruikt functionele cookies om de winkelwagen te laten werken, en analytische cookies om de site te verbeteren. Je kiest zelf wat je toestaat.</p></div>
+    <div class="cookie-actions">
+      <button class="cookie-btn ghost" id="cookieDeny">Alleen noodzakelijk</button>
+      <button class="cookie-btn primary" id="cookieAccept">Alles accepteren</button>
+    </div>
+  </div>
+
 <script>
 (function(){
   "use strict";
@@ -1934,9 +1961,28 @@
   renderProductPage();
   renderCart();
   router();
+
+  /* ---------- COOKIE BAR ---------- */
+  (function(){
+    var bar=document.getElementById("cookieBar");
+    if(!bar) return;
+    var KEY="cookieConsent";
+    function close(v){
+      try{localStorage.setItem(KEY,v);}catch(e){}
+      bar.classList.remove("show");
+      if(typeof showToast==="function") showToast("Cookievoorkeur opgeslagen");
+    }
+    var saved=null; try{saved=localStorage.getItem(KEY);}catch(e){}
+    if(!saved){ setTimeout(function(){bar.classList.add("show");},900); }
+    document.getElementById("cookieAccept").addEventListener("click",function(){close("all");});
+    document.getElementById("cookieDeny").addEventListener("click",function(){close("essential");});
+  })();
 })();
 
 </script>
+
+
+</div>
 
 </body>
 </html>
