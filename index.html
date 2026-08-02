@@ -475,6 +475,51 @@
   .warning-box p{margin-bottom:12px;}
   .warning-box p:last-child{margin-bottom:0;}
 
+  /* ---------- CHECKOUT / PAYMENT ---------- */
+  .checkout-layout{display:grid;grid-template-columns:1.3fr 1fr;gap:56px;align-items:start;}
+  @media(max-width:900px){.checkout-layout{grid-template-columns:1fr;}}
+  .checkout-block{margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--border-light);}
+  .checkout-block:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .field-error{color:#C0392B;font-size:12px;margin-top:6px;font-weight:700;min-height:0;}
+  .form-group.has-error input,.form-group.has-error select,.form-group.has-error textarea{border-color:#C0392B;}
+  .shipping-option,.payment-option{
+    display:flex;align-items:center;gap:14px;border:2px solid var(--border-light);border-radius:6px;
+    padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:border-color .15s ease,background .15s ease;
+  }
+  .shipping-option:hover,.payment-option:hover{border-color:var(--gaspari-black);}
+  .shipping-option input,.payment-option input{width:18px;height:18px;accent-color:var(--gaspari-red);flex:none;}
+  .shipping-option.selected,.payment-option.selected{border-color:var(--gaspari-red);background:rgba(208,2,27,0.05);}
+  .option-icon{font-size:20px;flex:none;}
+  .option-label{flex:1;font-weight:700;font-size:14px;}
+  .option-price{font-weight:900;font-size:14px;flex:none;}
+  .order-summary-box{position:sticky;top:110px;border:2px solid var(--border-light);border-radius:8px;padding:24px;background:#FAFAFA;}
+  .order-summary-box h3{font-size:16px;margin-bottom:6px;text-transform:uppercase;}
+  .summary-line-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-light);align-items:center;}
+  .summary-line-item img{width:52px;height:52px;object-fit:contain;background:#fff;border-radius:6px;padding:4px;flex:none;}
+  .summary-line-info h5{font-size:13px;font-weight:700;margin:0 0 4px;color:var(--heading-color);}
+  .summary-line-info .flavor{font-size:12px;color:#8A8A8A;}
+  .summary-line-price{margin-left:auto;font-weight:900;font-size:13px;flex:none;}
+  .summary-totals{margin-top:12px;padding-top:14px;}
+  .summary-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px;}
+  .summary-row.total{font-weight:900;font-size:18px;border-top:1px solid var(--border-light);padding-top:14px;margin-top:8px;}
+  .summary-row.vat-note{font-size:12px;color:#9A9A9A;margin-bottom:0;}
+  .discount-row{display:flex;gap:8px;margin:18px 0 4px;}
+  .discount-row input{flex:1;padding:10px 12px;border:2px solid var(--border-light);border-radius:4px;font-size:14px;font-family:inherit;}
+  .discount-row input:focus{outline:none;border-color:var(--gaspari-black);}
+  .discount-msg{font-size:12px;margin-bottom:10px;font-weight:700;min-height:14px;}
+  .discount-msg.ok{color:#1A7A34;}
+  .discount-msg.err{color:#C0392B;}
+  .invoice-address-block{display:none;margin-top:16px;padding-top:16px;border-top:1px dashed var(--border-light);}
+  .invoice-address-block.show{display:block;}
+  .payment-box{max-width:640px;margin:0 auto;text-align:center;padding:50px 40px;border:2px solid var(--border-light);border-radius:8px;}
+  .payment-order-number{font-weight:900;font-size:13px;letter-spacing:.06em;color:var(--gaspari-navy);margin-bottom:14px;text-transform:uppercase;}
+  .payment-total{font-size:40px;margin:6px 0 24px;font-weight:900;}
+  .pay-btn{width:100%;padding:20px;font-size:16px;margin:8px 0 18px;}
+  .btn-accent{background:var(--gaspari-red);color:#FFFFFF;border-color:var(--gaspari-red);}
+  .pay-trust-row{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;margin-top:30px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+  .pay-trust-row .trust-item{display:flex;align-items:center;gap:6px;}
+  .pay-trust-row .trust-item svg{width:18px;height:18px;color:var(--gaspari-red);}
+
   .site-form{max-width:680px;}
   .form-group{margin-bottom:18px;}
   .form-group label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;color:var(--heading-color);}
@@ -1181,6 +1226,267 @@
     </div>
   </section>
 
+  <!-- ============ CHECKOUT ============ -->
+  <section class="page" id="page-checkout">
+    <div class="page-header"><div class="container">
+      <h1>Afrekenen</h1>
+      <p>Vul je gegevens in en kies je verzend- en betaalmethode.</p>
+    </div></div>
+    <div class="container content-section">
+      <div class="checkout-layout">
+        <div>
+          <form class="site-form" id="checkoutForm" novalidate style="max-width:none;">
+
+            <div class="checkout-block">
+              <div class="pd-label">Contactgegevens</div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="coEmail">E-mail</label>
+                  <input type="email" id="coEmail" name="E-mail" required />
+                  <div class="field-error" id="err-coEmail"></div>
+                </div>
+                <div class="form-group">
+                  <label for="coPhone">Telefoon</label>
+                  <input type="tel" id="coPhone" name="Telefoon" required />
+                  <div class="field-error" id="err-coPhone"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="checkout-block">
+              <div class="pd-label">Bezorgadres</div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="coFirstName">Voornaam</label>
+                  <input type="text" id="coFirstName" required />
+                  <div class="field-error" id="err-coFirstName"></div>
+                </div>
+                <div class="form-group">
+                  <label for="coLastName">Achternaam</label>
+                  <input type="text" id="coLastName" required />
+                  <div class="field-error" id="err-coLastName"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="coCompany">Bedrijfsnaam (optioneel)</label>
+                <input type="text" id="coCompany" />
+              </div>
+              <div class="form-row">
+                <div class="form-group" style="flex:2 1 260px;">
+                  <label for="coStreet">Straat en huisnummer</label>
+                  <input type="text" id="coStreet" required placeholder="bijv. Kalverstraat 12" />
+                  <div class="field-error" id="err-coStreet"></div>
+                </div>
+                <div class="form-group">
+                  <label for="coAddition">Toevoeging (optioneel)</label>
+                  <input type="text" id="coAddition" placeholder="bijv. A" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="coPostcode">Postcode</label>
+                  <input type="text" id="coPostcode" required placeholder="1234 AB" />
+                  <div class="field-error" id="err-coPostcode"></div>
+                </div>
+                <div class="form-group">
+                  <label for="coCity">Plaats</label>
+                  <input type="text" id="coCity" required />
+                  <div class="field-error" id="err-coCity"></div>
+                </div>
+                <div class="form-group">
+                  <label for="coCountry">Land</label>
+                  <select id="coCountry">
+                    <option value="NL">Nederland</option>
+                    <option value="BE">Belgi&euml;</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" style="margin-top:6px;margin-bottom:0;">
+                <label style="display:flex;align-items:center;gap:10px;text-transform:none;font-weight:700;font-size:14px;letter-spacing:0;">
+                  <input type="checkbox" id="coDiffInvoice" style="width:18px;height:18px;" /> Factuuradres is anders dan bezorgadres
+                </label>
+              </div>
+              <div class="invoice-address-block" id="invoiceAddressBlock">
+                <div class="pd-label">Factuuradres</div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="inFirstName">Voornaam</label>
+                    <input type="text" id="inFirstName" />
+                    <div class="field-error" id="err-inFirstName"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inLastName">Achternaam</label>
+                    <input type="text" id="inLastName" />
+                    <div class="field-error" id="err-inLastName"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inCompany">Bedrijfsnaam (optioneel)</label>
+                  <input type="text" id="inCompany" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group" style="flex:2 1 260px;">
+                    <label for="inStreet">Straat en huisnummer</label>
+                    <input type="text" id="inStreet" />
+                    <div class="field-error" id="err-inStreet"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inAddition">Toevoeging (optioneel)</label>
+                    <input type="text" id="inAddition" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="inPostcode">Postcode</label>
+                    <input type="text" id="inPostcode" placeholder="1234 AB" />
+                    <div class="field-error" id="err-inPostcode"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inCity">Plaats</label>
+                    <input type="text" id="inCity" />
+                    <div class="field-error" id="err-inCity"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inCountry">Land</label>
+                    <select id="inCountry">
+                      <option value="NL">Nederland</option>
+                      <option value="BE">Belgi&euml;</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" style="margin-top:6px;margin-bottom:0;">
+                <label for="coNotes">Opmerkingen (optioneel)</label>
+                <textarea id="coNotes"></textarea>
+              </div>
+            </div>
+
+            <div class="checkout-block">
+              <div class="pd-label">Verzendmethode</div>
+              <label class="shipping-option selected" data-key="standaard">
+                <input type="radio" name="shippingMethod" value="standaard" checked />
+                <span class="option-icon">&#128230;</span>
+                <span class="option-label">Standaard bezorging (1-2 werkdagen)</span>
+                <span class="option-price" id="shipPriceStandaard">&euro; 4,95</span>
+              </label>
+              <label class="shipping-option" data-key="avond">
+                <input type="radio" name="shippingMethod" value="avond" />
+                <span class="option-icon">&#127769;</span>
+                <span class="option-label">Avondbezorging (+&euro; 2,95)</span>
+                <span class="option-price" id="shipPriceAvond">&euro; 7,90</span>
+              </label>
+            </div>
+
+            <div class="checkout-block">
+              <div class="pd-label">Betaalmethode</div>
+              <label class="payment-option selected" data-key="ideal">
+                <input type="radio" name="paymentMethod" value="ideal" checked />
+                <span class="option-icon">&#127974;</span>
+                <span class="option-label">iDEAL</span>
+              </label>
+              <label class="payment-option" data-key="bancontact">
+                <input type="radio" name="paymentMethod" value="bancontact" />
+                <span class="option-icon">&#128179;</span>
+                <span class="option-label">Bancontact</span>
+              </label>
+              <label class="payment-option" data-key="creditcard">
+                <input type="radio" name="paymentMethod" value="creditcard" />
+                <span class="option-icon">&#128179;</span>
+                <span class="option-label">Creditcard</span>
+              </label>
+              <label class="payment-option" data-key="paypal">
+                <input type="radio" name="paymentMethod" value="paypal" />
+                <span class="option-icon">&#127991;</span>
+                <span class="option-label">PayPal</span>
+              </label>
+              <label class="payment-option" data-key="klarna">
+                <input type="radio" name="paymentMethod" value="klarna" />
+                <span class="option-icon">&#128337;</span>
+                <span class="option-label">Klarna &ndash; achteraf betalen</span>
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-dark" style="width:100%;padding:18px;">Doorgaan Naar Betalen</button>
+          </form>
+        </div>
+
+        <div>
+          <div class="order-summary-box">
+            <h3>Besteloverzicht</h3>
+            <div id="checkoutSummaryItems"></div>
+            <div class="discount-row">
+              <input type="text" id="discountCodeInput" placeholder="Kortingscode" />
+              <button type="button" class="btn btn-outline" id="applyDiscountBtn" style="padding:10px 16px;">Toepassen</button>
+            </div>
+            <div class="discount-msg" id="discountMsg"></div>
+            <div class="summary-totals" id="checkoutTotals"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAYMENT ============ -->
+  <section class="page" id="page-payment">
+    <div class="page-header"><div class="container">
+      <h1>Betalen</h1>
+      <p>Rond je bestelling veilig af.</p>
+    </div></div>
+    <div class="container content-section">
+      <div class="payment-box">
+        <div class="payment-order-number" id="paymentOrderNumber">Bestelnummer: GN-000000</div>
+        <p style="font-size:14px;">Gekozen betaalmethode: <strong id="paymentMethodLabel">iDEAL</strong></p>
+        <div class="payment-total" id="paymentTotal">&euro; 0,00</div>
+
+        <div id="paymentBankBlock" style="display:none;max-width:320px;margin:0 auto 20px;text-align:left;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="paymentBankSelect">Kies je bank</label>
+            <select id="paymentBankSelect">
+              <option>ABN AMRO</option>
+              <option>ING</option>
+              <option>Rabobank</option>
+              <option>bunq</option>
+              <option>ASN Bank</option>
+              <option>Knab</option>
+              <option>Regiobank</option>
+              <option>Revolut</option>
+              <option>SNS</option>
+              <option>Triodos Bank</option>
+              <option>Van Lanschot</option>
+              <option>N26</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- MOLLIE: hier komt de redirect naar de Mollie payment URL -->
+        <button class="btn btn-accent pay-btn" id="payNowBtn">Betaal &euro; 0,00</button>
+        <div><a href="#checkout" style="font-size:13px;font-weight:700;text-decoration:underline;">&larr; Terug naar bestelgegevens</a></div>
+
+        <div class="pay-trust-row">
+          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"/></svg> Veilig Betalen</div>
+          <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> 14 Dagen Retourtermijn</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ORDER CONFIRMED (bereikbaar via code, na Mollie-return) ============ -->
+  <section class="page" id="page-order-confirmed">
+    <div class="page-header"><div class="container">
+      <h1>Bedankt Voor Je Bestelling!</h1>
+      <p>We hebben je betaling ontvangen en gaan direct aan de slag.</p>
+    </div></div>
+    <div class="container content-section" style="text-align:center;">
+      <div class="confirm-block show" style="max-width:560px;margin:0 auto;">
+        <strong>Bestelnummer: <span id="confirmedOrderNumber">GN-000000</span></strong>
+        <p style="margin:8px 0 0;">Je ontvangt een orderbevestiging per e-mail. Vragen? Neem contact op via info@gasparinederland.nl.</p>
+      </div>
+      <div style="margin-top:28px;">
+        <a href="#home" class="btn btn-dark">Verder Winkelen</a>
+      </div>
+    </div>
+  </section>
+
 </main></main>
 <footer>
       <div class="container">
@@ -1417,8 +1723,29 @@
     selectedFlavorIndex: 0,
     quantity: 1,
     cart: [], // { name, flavor, price, qty, img }
-    categoryFilter: null
+    categoryFilter: null,
+    checkout: {
+      shippingMethod: "standaard",
+      paymentMethod: "ideal",
+      discountCode: "",
+      discountApplied: false
+    },
+    order: null
   };
+
+  var CART_STORAGE_KEY = "gaspariCart";
+  function saveCart(){
+    try{ localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state.cart)); }catch(e){}
+  }
+  function loadCart(){
+    try{
+      var raw = localStorage.getItem(CART_STORAGE_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        if(Array.isArray(parsed)) state.cart = parsed;
+      }
+    }catch(e){}
+  }
 
   function fmtPrice(n){
     return "\u20ac " + n.toFixed(2).replace(".", ",");
@@ -1438,7 +1765,10 @@
     "#shipping": "page-shipping",
     "#returns": "page-returns",
     "#track-order": "page-track-order",
-    "#faq": "page-faq"
+    "#faq": "page-faq",
+    "#checkout": "page-checkout",
+    "#payment": "page-payment",
+    "#order-confirmed": "page-order-confirmed"
   };
   function parseQuery(hash){
     var qIdx = hash.indexOf("?");
@@ -1469,6 +1799,16 @@
       renderProductPage();
     } else {
       pageId = PAGE_MAP[base] || "page-home";
+    }
+    if(pageId === "page-checkout"){
+      renderCheckoutSummary();
+    }
+    if(pageId === "page-payment"){
+      if(!state.order){
+        window.location.hash = "#checkout";
+        return;
+      }
+      renderPaymentPage();
     }
     var target = document.getElementById(pageId);
     if(target){ target.classList.add("active"); }
@@ -1554,7 +1894,7 @@
   /* ---------- NEWSLETTER ---------- */
 
   /* ---------- MAIL DELIVERY ---------- */
-  var MAIL_TO = "info@thehealthhouse.nl";
+  var MAIL_TO = "info@gasparinederland.nl";
   var SITE_NAME = "Gaspari Nutrition Nederland";
   function sendMail(form, subject){
     try{
@@ -1730,11 +2070,13 @@
     } else {
       state.cart.push(item);
     }
+    saveCart();
     renderCart();
   }
 
   function removeFromCart(index){
     state.cart.splice(index, 1);
+    saveCart();
     renderCart();
   }
 
@@ -1742,6 +2084,7 @@
     var item = state.cart[index];
     item.qty += delta;
     if(item.qty <= 0){ removeFromCart(index); return; }
+    saveCart();
     renderCart();
   }
 
@@ -1806,8 +2149,281 @@
       showToast("Je winkelwagen is leeg");
       return;
     }
-    showToast("Doorverwijzen naar checkout...");
+    closeCart();
+    window.location.hash = "#checkout";
   });
+
+  /* ---------- CHECKOUT ---------- */
+  var DISCOUNT_CODE = "GASPARI10";
+  var DISCOUNT_PCT = 0.10;
+  var VAT_RATE = 0.21;
+  var FREE_SHIPPING_THRESHOLD = 50;
+
+  function getCartSubtotal(){
+    return state.cart.reduce(function(sum, c){ return sum + c.qty * c.price; }, 0);
+  }
+  function getShippingCost(subtotal, method){
+    var base = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : 4.95;
+    if(method === "avond"){ return base + 2.95; }
+    return base;
+  }
+  function calcTotals(){
+    var subtotal = getCartSubtotal();
+    var shipping = getShippingCost(subtotal, state.checkout.shippingMethod);
+    var discountAmount = state.checkout.discountApplied ? subtotal * DISCOUNT_PCT : 0;
+    var total = subtotal - discountAmount + shipping;
+    var vatAmount = total - (total / (1 + VAT_RATE));
+    return { subtotal: subtotal, shipping: shipping, discountAmount: discountAmount, total: total, vatAmount: vatAmount };
+  }
+
+  var checkoutSummaryItemsEl = document.getElementById("checkoutSummaryItems");
+  var checkoutTotalsEl = document.getElementById("checkoutTotals");
+  function renderCheckoutSummary(){
+    if(!checkoutSummaryItemsEl) return;
+    checkoutSummaryItemsEl.innerHTML = "";
+    state.cart.forEach(function(item){
+      var el = document.createElement("div");
+      el.className = "summary-line-item";
+      el.innerHTML =
+        '<img src="' + item.img + '" alt="' + item.name + '" />' +
+        '<div class="summary-line-info"><h5>' + item.name + '</h5><div class="flavor">' + item.flavor + ' &times; ' + item.qty + '</div></div>' +
+        '<div class="summary-line-price">' + fmtPrice(item.qty * item.price) + '</div>';
+      checkoutSummaryItemsEl.appendChild(el);
+    });
+    var t = calcTotals();
+    var rows = '<div class="summary-row"><span>Subtotaal</span><span>' + fmtPrice(t.subtotal) + '</span></div>';
+    rows += '<div class="summary-row"><span>Verzendkosten</span><span>' + (t.shipping === 0 ? "Gratis" : fmtPrice(t.shipping)) + '</span></div>';
+    if(t.discountAmount > 0){
+      rows += '<div class="summary-row"><span>Korting (' + state.checkout.discountCode + ')</span><span>&minus; ' + fmtPrice(t.discountAmount) + '</span></div>';
+    }
+    rows += '<div class="summary-row total"><span>Totaal</span><span>' + fmtPrice(t.total) + '</span></div>';
+    rows += '<div class="summary-row vat-note"><span>Waarvan btw (21%)</span><span>' + fmtPrice(t.vatAmount) + '</span></div>';
+    checkoutTotalsEl.innerHTML = rows;
+
+    var shipStandaardPrice = document.getElementById("shipPriceStandaard");
+    var shipAvondPrice = document.getElementById("shipPriceAvond");
+    if(shipStandaardPrice){
+      var base = t.subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : 4.95;
+      shipStandaardPrice.textContent = base === 0 ? "Gratis" : fmtPrice(base);
+      shipAvondPrice.textContent = fmtPrice(base + 2.95);
+    }
+  }
+
+  document.querySelectorAll('input[name="shippingMethod"]').forEach(function(input){
+    input.addEventListener("change", function(){
+      document.querySelectorAll(".shipping-option").forEach(function(l){ l.classList.remove("selected"); });
+      input.closest(".shipping-option").classList.add("selected");
+      state.checkout.shippingMethod = input.value;
+      renderCheckoutSummary();
+    });
+  });
+  document.querySelectorAll('input[name="paymentMethod"]').forEach(function(input){
+    input.addEventListener("change", function(){
+      document.querySelectorAll(".payment-option").forEach(function(l){ l.classList.remove("selected"); });
+      input.closest(".payment-option").classList.add("selected");
+      state.checkout.paymentMethod = input.value;
+    });
+  });
+
+  var discountCodeInput = document.getElementById("discountCodeInput");
+  var discountMsgEl = document.getElementById("discountMsg");
+  var applyDiscountBtn = document.getElementById("applyDiscountBtn");
+  if(applyDiscountBtn){
+    applyDiscountBtn.addEventListener("click", function(){
+      var code = discountCodeInput.value.trim().toUpperCase();
+      if(!code){
+        state.checkout.discountApplied = false;
+        discountMsgEl.textContent = "Vul een kortingscode in.";
+        discountMsgEl.className = "discount-msg err";
+        renderCheckoutSummary();
+        return;
+      }
+      if(code === DISCOUNT_CODE){
+        state.checkout.discountApplied = true;
+        state.checkout.discountCode = code;
+        discountMsgEl.textContent = "Kortingscode toegepast: 10% korting!";
+        discountMsgEl.className = "discount-msg ok";
+      } else {
+        state.checkout.discountApplied = false;
+        state.checkout.discountCode = "";
+        discountMsgEl.textContent = "Deze kortingscode is niet geldig.";
+        discountMsgEl.className = "discount-msg err";
+      }
+      renderCheckoutSummary();
+    });
+  }
+
+  var coDiffInvoice = document.getElementById("coDiffInvoice");
+  var invoiceAddressBlock = document.getElementById("invoiceAddressBlock");
+  if(coDiffInvoice){
+    coDiffInvoice.addEventListener("change", function(){
+      invoiceAddressBlock.classList.toggle("show", coDiffInvoice.checked);
+    });
+  }
+
+  function isValidEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || "").trim()); }
+  function isValidPostcode(v, country){
+    v = (v || "").trim();
+    if(country === "BE"){ return /^[1-9][0-9]{3}$/.test(v); }
+    return /^[1-9][0-9]{3}\s?[A-Za-z]{2}$/.test(v);
+  }
+  function setFieldError(inputEl, errorEl, msg){
+    if(!inputEl || !errorEl) return true;
+    var group = inputEl.closest(".form-group");
+    if(msg){
+      if(group) group.classList.add("has-error");
+      errorEl.textContent = msg;
+      return false;
+    }
+    if(group) group.classList.remove("has-error");
+    errorEl.textContent = "";
+    return true;
+  }
+
+  var checkoutForm = document.getElementById("checkoutForm");
+  if(checkoutForm){
+    checkoutForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      var valid = true;
+      var firstInvalid = null;
+
+      function check(id, condition, msg){
+        var input = document.getElementById(id);
+        var err = document.getElementById("err-" + id);
+        if(!condition){
+          setFieldError(input, err, msg);
+          valid = false;
+          if(!firstInvalid) firstInvalid = input;
+        } else {
+          setFieldError(input, err, "");
+        }
+      }
+
+      var email = document.getElementById("coEmail").value;
+      var phone = document.getElementById("coPhone").value;
+      var firstName = document.getElementById("coFirstName").value;
+      var lastName = document.getElementById("coLastName").value;
+      var street = document.getElementById("coStreet").value;
+      var postcode = document.getElementById("coPostcode").value;
+      var city = document.getElementById("coCity").value;
+      var country = document.getElementById("coCountry").value;
+
+      check("coEmail", email.trim() !== "" && isValidEmail(email), email.trim() === "" ? "E-mailadres is verplicht." : "Vul een geldig e-mailadres in.");
+      check("coPhone", phone.trim() !== "", "Telefoonnummer is verplicht.");
+      check("coFirstName", firstName.trim() !== "", "Voornaam is verplicht.");
+      check("coLastName", lastName.trim() !== "", "Achternaam is verplicht.");
+      check("coStreet", street.trim() !== "", "Straat en huisnummer zijn verplicht.");
+      check("coPostcode", postcode.trim() !== "" && isValidPostcode(postcode, country), postcode.trim() === "" ? "Postcode is verplicht." : "Vul een geldige postcode in (bijv. 1234 AB).");
+      check("coCity", city.trim() !== "", "Plaatsnaam is verplicht.");
+
+      var diffInvoice = document.getElementById("coDiffInvoice").checked;
+      var invAddr = null;
+      if(diffInvoice){
+        var inFirstName = document.getElementById("inFirstName").value;
+        var inLastName = document.getElementById("inLastName").value;
+        var inStreet = document.getElementById("inStreet").value;
+        var inPostcode = document.getElementById("inPostcode").value;
+        var inCity = document.getElementById("inCity").value;
+        var inCountry = document.getElementById("inCountry").value;
+        check("inFirstName", inFirstName.trim() !== "", "Voornaam is verplicht.");
+        check("inLastName", inLastName.trim() !== "", "Achternaam is verplicht.");
+        check("inStreet", inStreet.trim() !== "", "Straat en huisnummer zijn verplicht.");
+        check("inPostcode", inPostcode.trim() !== "" && isValidPostcode(inPostcode, inCountry), inPostcode.trim() === "" ? "Postcode is verplicht." : "Vul een geldige postcode in (bijv. 1234 AB).");
+        check("inCity", inCity.trim() !== "", "Plaatsnaam is verplicht.");
+        invAddr = {
+          firstName: inFirstName.trim(), lastName: inLastName.trim(),
+          company: document.getElementById("inCompany").value.trim(),
+          street: inStreet.trim(), addition: document.getElementById("inAddition").value.trim(),
+          postcode: inPostcode.trim(), city: inCity.trim(), country: inCountry
+        };
+      }
+
+      if(!valid){
+        if(firstInvalid){
+          firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+          firstInvalid.focus({ preventScroll: true });
+        }
+        showToast("Controleer de gemarkeerde velden.");
+        return;
+      }
+
+      var shippingMethod = (document.querySelector('input[name="shippingMethod"]:checked') || {}).value || "standaard";
+      var paymentMethod = (document.querySelector('input[name="paymentMethod"]:checked') || {}).value || "ideal";
+      state.checkout.shippingMethod = shippingMethod;
+      state.checkout.paymentMethod = paymentMethod;
+
+      var totals = calcTotals();
+      var orderNumber = "GN-" + Math.floor(100000 + Math.random() * 900000);
+
+      state.order = {
+        orderNumber: orderNumber,
+        contact: { email: email.trim(), phone: phone.trim() },
+        shippingAddress: {
+          firstName: firstName.trim(), lastName: lastName.trim(),
+          company: document.getElementById("coCompany").value.trim(),
+          street: street.trim(), addition: document.getElementById("coAddition").value.trim(),
+          postcode: postcode.trim(), city: city.trim(), country: country
+        },
+        invoiceAddress: invAddr,
+        notes: document.getElementById("coNotes").value.trim(),
+        shippingMethod: shippingMethod,
+        paymentMethod: paymentMethod,
+        items: state.cart.slice(),
+        totals: totals
+      };
+
+      window.location.hash = "#payment";
+    });
+  }
+
+  /* ---------- PAYMENT ---------- */
+  var PAYMENT_METHOD_LABELS = {
+    ideal: "iDEAL",
+    bancontact: "Bancontact",
+    creditcard: "Creditcard",
+    paypal: "PayPal",
+    klarna: "Klarna \u2013 achteraf betalen"
+  };
+  function renderPaymentPage(){
+    var order = state.order;
+    if(!order) return;
+    document.getElementById("paymentOrderNumber").textContent = "Bestelnummer: " + order.orderNumber;
+    document.getElementById("paymentMethodLabel").textContent = PAYMENT_METHOD_LABELS[order.paymentMethod] || order.paymentMethod;
+    var totalText = fmtPrice(order.totals.total);
+    document.getElementById("paymentTotal").textContent = totalText;
+    var payBtn = document.getElementById("payNowBtn");
+    payBtn.textContent = "Betaal " + totalText;
+    var bankBlock = document.getElementById("paymentBankBlock");
+    bankBlock.style.display = order.paymentMethod === "ideal" ? "block" : "none";
+  }
+
+  /* MOLLIE integratiepunt: deze functie bouwt straks een Mollie payment aan via de
+     backend en stuurt de gebruiker door naar de checkoutUrl die Mollie teruggeeft. */
+  function startPayment(order){
+    /* MOLLIE integratiepunt */
+    showToast("De betaalkoppeling is binnenkort actief. Je bestelling (" + order.orderNumber + ") is opgeslagen.");
+  }
+
+  var payNowBtn = document.getElementById("payNowBtn");
+  if(payNowBtn){
+    payNowBtn.addEventListener("click", function(){
+      if(!state.order) return;
+      if(state.order.paymentMethod === "ideal"){
+        var bankSelect = document.getElementById("paymentBankSelect");
+        if(bankSelect) state.order.bank = bankSelect.value;
+      }
+      startPayment(state.order);
+    });
+  }
+
+  /* Reserved for future Mollie-return handling: navigates to the thank-you page. */
+  function showOrderConfirmed(order){
+    if(order){
+      var el = document.getElementById("confirmedOrderNumber");
+      if(el) el.textContent = order.orderNumber;
+    }
+    window.location.hash = "#order-confirmed";
+  }
 
   /* ---------- TOAST ---------- */
   var toast = document.getElementById("toast");
@@ -1958,6 +2574,7 @@
   }
 
   /* ---------- INIT ---------- */
+  loadCart();
   renderProductPage();
   renderCart();
   router();
